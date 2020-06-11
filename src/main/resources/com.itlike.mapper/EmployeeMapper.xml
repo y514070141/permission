@@ -68,6 +68,7 @@
         <where>
             <if test=" keyword !=null and keyword !='' ">
                 and tel like concat('%',#{keyword},'%')
+                or username like concat('%',#{keyword},'%')
             </if>
         </where>
     </sql>
@@ -90,5 +91,23 @@
 <!--    查询角色 通过eid-->
     <select id="getRidByEid" resultType="java.lang.Long">
         select rid from employee_role_rel where eid=#{id}
+    </select>
+<!--    根据用户名查询用户-->
+    <select id="getEmployeeWithUsername" resultType="com.itlike.domain.Employee">
+        select * from employee where username=#{username}
+    </select>
+<!--    根据角色 id查询-->
+    <select id="getRolesRoleId" resultType="java.lang.String">
+        SELECT r.rnum FROM `employee_role_rel` as e
+        Left join role as r on e.rid=r.rid where eid=#{id}
+    </select>
+<!--    根据 用户id查询 资源名称
+    1.查询所有角色和权限
+    2.查询用户给有哪些角色
+    -->
+    <select id="getPermissionById" resultType="java.lang.String">
+    SELECT DISTINCT p.presource FROM `per_role_for` as r
+    left join permission as p
+    on r.pid=p.pid where rid in(select rid from employee_role_rel where eid=#{id})
     </select>
 </mapper>

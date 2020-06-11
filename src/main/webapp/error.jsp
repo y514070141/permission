@@ -12,6 +12,6 @@
     <%@include file="/static/common/common.jsp"%>
 </head>
 <body>
-<h1>错误----------${Exception}</h1>
+<h1>没有权限访问该界面</h1>
 </body>
 </html>
