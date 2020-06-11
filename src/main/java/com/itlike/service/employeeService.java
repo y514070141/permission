@@ -18,4 +18,11 @@ public interface employeeService {
     void updateState(Long id);
 
     List<Long> getRidByEid(Long id);
+    //根据用户名 查询用户
+    Employee getEmployeeByUserName(String username);
+
+    //根据用户id查询角色编号名称
+    List<String> getRolesRoleId(Long id);
+    //根据用户id查询资源名称那个
+    List<String> getPermissionById(Long id);
 }

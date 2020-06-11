@@ -8,6 +8,7 @@ import com.itlike.domain.Role;
 import com.itlike.domain.pageListRes;
 import com.itlike.mapper.EmployeeMapper;
 import com.itlike.service.employeeService;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,11 @@ public class employeeServiceImpl implements employeeService {
 
     @Override
     public void saveEmployee(Employee employee) {
+        //实现密码登录 保存
+        //1.设置 存储加密方式  2.配置认证处理加密方式 3.配置凭证匹配器
+        //密码加密   密码  加盐 2次散列
+        Md5Hash md5Hash=new Md5Hash(employee.getPassword(),employee.getUsername(),2);
+        employee.setPassword(md5Hash.toString());
         //1.保存员工
         employeeMapper.insert(employee);
         //2.保存员工角色
@@ -59,6 +65,23 @@ public class employeeServiceImpl implements employeeService {
     @Override
     public List<Long> getRidByEid(Long id) {
         return employeeMapper.getRidByEid(id);
+    }
+
+    //根据用户名 查询用户
+    @Override
+    public Employee getEmployeeByUserName(String username) {
+        Employee employeeWithUsername = employeeMapper.getEmployeeWithUsername(username);
+        return employeeWithUsername;
+    }
+
+    @Override
+    public List<String> getRolesRoleId(Long id) {
+       return employeeMapper.getRolesRoleId(id);
+    }
+
+    @Override
+    public List<String> getPermissionById(Long id) {
+        return employeeMapper.getPermissionById(id);
     }
 
 
